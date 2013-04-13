@@ -1,10 +1,17 @@
 package sk.sochuliak.barabasi.network;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MapNetwork extends NetworkBase implements Network {
 
-	private Map<Integer, int[]> nodes;
+	private Map<Integer, List<Integer>> nodes;
+	
+	public MapNetwork() {
+		this.nodes = new HashMap<Integer, List<Integer>>();
+	}
 	
 	public static Network buildNetwork(int nodesCount, int edgesCount) {
 		// TODO Auto-generated method stub
@@ -13,13 +20,23 @@ public class MapNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public boolean addNode(int nodeId) {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.nodes.get(nodeId) != null) {
+			return false;
+		}
+		
+		this.nodes.put(nodeId, new ArrayList<Integer>());
+		return true;
 	}
 
 	@Override
 	public boolean addEdge(int nodeId1, int nodeId2) {
-		// TODO Auto-generated method stub
+		if (nodeId1 != nodeId2 && this.containsNode(nodeId1) && this.containsNode(nodeId2)) {
+			if (!this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
+				this.nodes.get(nodeId1).add(nodeId2);
+				this.nodes.get(nodeId2).add(nodeId1);
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -37,8 +54,30 @@ public class MapNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
-		// TODO Auto-generated method stub
-		return 0;
+		int numberOfEdges = 0;
+		List<String> countedEdges = new ArrayList<String>();
+		
+		for (int nodeId1 : nodesIds) {
+			for (int nodeId2 : nodesIds) {
+				if (nodeId1 != nodeId2) {
+					
+					String edgeId = "";
+					if (nodeId1 < nodeId2) {
+						edgeId = nodeId1 + "|" + nodeId2;
+					} else {
+						edgeId = nodeId2 + "|" + nodeId1;
+					}
+					
+					if (!countedEdges.contains(edgeId)) {
+						if (this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
+							numberOfEdges++;
+							countedEdges.add(edgeId);
+						}
+					}
+				}
+			}
+		}
+		return numberOfEdges;
 	}
 
 	@Override
@@ -48,32 +87,35 @@ public class MapNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int[] getAdjacentNodesIds(int nodeId) {
-		// TODO Auto-generated method stub
-		return null;
+		int[] result = new int[this.getAdjacentNodesCount(nodeId)];
+		if (result.length > 0) {
+			int pointer = 0;
+			for (Integer adjacentNode : this.nodes.get(nodeId)) {
+				result[pointer] = adjacentNode;
+				pointer++;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public int getAdjacentNodesCount(int nodeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.nodes.get(nodeId).size();
 	}
 
 	@Override
 	public boolean isEdgeBetweenNodes(int nodeId1, int nodeId2) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.nodes.get(nodeId1).contains(nodeId2);
 	}
 
 	@Override
 	public int getNumberOfNodes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.nodes.size();
 	}
 
 	@Override
 	public boolean containsNode(int nodeId) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.nodes.get(nodeId) != null;
 	}
 
 }
