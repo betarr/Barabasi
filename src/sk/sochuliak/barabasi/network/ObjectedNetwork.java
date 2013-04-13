@@ -51,8 +51,7 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int[] calculateAdjacentNodesClusterDriven(int nodesCount) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.calculateAdjacentNodesClusterDriven(nodesCount, this);
 	}
 
 	@Override
