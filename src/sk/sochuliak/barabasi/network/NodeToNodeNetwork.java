@@ -6,6 +6,9 @@ import java.util.List;
 
 public class NodeToNodeNetwork extends NetworkBase implements Network {
 	
+	/**
+	 * Initial size of nodesIds array.
+	 */
 	private static final int INITIAL_SIZE = 1;
 	
 	/**
@@ -46,16 +49,6 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		this.nodesIds[this.numberOfNodes] = nodeId;
 		this.numberOfNodes++;
 		return true;
-	}
-
-	private void appendDoubleSizeOfNodesIds() {
-		int oldSize = this.nodesIds.length;
-		int newSize = oldSize * 2;
-		int[] newNodesIds = new int[newSize];
-		for (int i = 0; i < newSize; i++) {
-			newNodesIds[i] = (i < oldSize) ? this.nodesIds[i] : -1;
-		}
-		this.nodesIds = newNodesIds;
 	}
 
 	@Override
@@ -169,6 +162,19 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * Makes nodesIds array two times larger.
+	 */
+	private void appendDoubleSizeOfNodesIds() {
+		int oldSize = this.nodesIds.length;
+		int newSize = oldSize * 2;
+		int[] newNodesIds = new int[newSize];
+		for (int i = 0; i < newSize; i++) {
+			newNodesIds[i] = (i < oldSize) ? this.nodesIds[i] : -1;
+		}
+		this.nodesIds = newNodesIds;
 	}
 
 }

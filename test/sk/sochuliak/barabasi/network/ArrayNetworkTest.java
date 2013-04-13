@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,11 +20,12 @@ public class ArrayNetworkTest {
 		for (int i = 0; i < 3; i++) {
 			this.network.addNode(i);
 		}
+		this.network.addEdge(0, 1);
 	}
 	
 	@Test
 	public void testAddNodeSuccess() {
-		boolean nodeAdded = this.network.addNode(4);
+		boolean nodeAdded = this.network.addNode(3);
 		int expectedNumberOfNodes = 4;
 		assertTrue(nodeAdded);
 		assertEquals(expectedNumberOfNodes, this.network.getNumberOfNodes());
@@ -29,21 +33,35 @@ public class ArrayNetworkTest {
 	
 	@Test
 	public void testAddNodeFail() {
-		boolean nodeAdded = this.network.addNode(4);
+		boolean nodeAdded = this.network.addNode(2);
 		int expectedNumberOfNodes = 3;
 		assertFalse(nodeAdded);
 		assertEquals(expectedNumberOfNodes, this.network.getNumberOfNodes());
 	}
 	
 	@Test
-	public void testAddEdge() {
-		this.network.addEdge(1, 4);
-		assertTrue(this.network.isEdgeBetweenNodes(1, 4));
+	public void testAddEdgeSuccess() {
+		boolean edgeAdded = this.network.addEdge(1, 2);
+		assertTrue(edgeAdded);
+		assertTrue(this.network.isEdgeBetweenNodes(1, 2));
+	}
+	
+	@Test
+	public void testAddEdgeFail() {
+		boolean edgeAdded = this.network.addEdge(0, 1);
+		assertFalse(edgeAdded);
+		assertTrue(this.network.isEdgeBetweenNodes(0, 1));
+		
+		boolean edgeAdded2 = this.network.addEdge(1, 1);
+		assertFalse(edgeAdded2);
 	}
 	
 	@Test
 	public void testGetNumberOfExistingEdgesBetweenNodes() {
+		this.network.addNode(3);
+		this.network.addNode(4);
 		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
 		int expectedNumberOfExistingEdges = 2;
 		int actualNumberOfExistingEdges = this.network.getNumberOfExistingEdgesBetweenNodes(new int[]{1, 2, 4});
 		assertEquals(expectedNumberOfExistingEdges, actualNumberOfExistingEdges);
@@ -70,13 +88,33 @@ public class ArrayNetworkTest {
 	
 	@Test
 	public void testGetAdjacentNodesIds() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
 		int[] expectedAdjacentNodesIds = new int[]{1, 2};
 		int[] actualAdjacentNodesIds = this.network.getAdjacentNodesIds(4);
-		assertEquals(expectedAdjacentNodesIds, actualAdjacentNodesIds);
+		
+		SortedSet<Integer> expectedAdjacentNodesIdsAsSet = this.getArrayAsSet(expectedAdjacentNodesIds);
+		SortedSet<Integer> actualAdjacentNodesIdsAsSet = this.getArrayAsSet(actualAdjacentNodesIds);
+		
+		assertEquals(expectedAdjacentNodesIdsAsSet, actualAdjacentNodesIdsAsSet);
 	}
 	
+	private SortedSet<Integer> getArrayAsSet(int[] nodesIds) {
+		SortedSet<Integer> result = new TreeSet<Integer>();
+		for (int nodeId : nodesIds) {
+			result.add(nodeId);
+		}
+		return result;
+	}
+
 	@Test
 	public void testGetAdjacentNodesCount() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
 		int expectedNodesCount = 2;
 		int actualNodesCount = this.network.getAdjacentNodesCount(4);
 		assertEquals(expectedNodesCount, actualNodesCount);
@@ -84,19 +122,31 @@ public class ArrayNetworkTest {
 	
 	@Test
 	public void testIsEdgeBetweenNodes() {
-		assertTrue(this.network.isEdgeBetweenNodes(1, 4));
-		assertFalse(this.network.isEdgeBetweenNodes(1, 2));
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		assertTrue(this.network.isEdgeBetweenNodes(2, 4));
+		assertFalse(this.network.isEdgeBetweenNodes(0, 4));
 	}
 	
 	@Test
 	public void testGetNumberOfNodes() {
-		int expectedNumberOfNodes = 4;
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		int expectedNumberOfNodes = 5;
 		int actualNumberOfNodes = this.network.getNumberOfNodes();
 		assertEquals(expectedNumberOfNodes, actualNumberOfNodes);
 	}
 	
 	@Test
 	public void testContainsNode() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
 		assertTrue(this.network.containsNode(4));
 		assertFalse(this.network.containsNode(5));
 	}

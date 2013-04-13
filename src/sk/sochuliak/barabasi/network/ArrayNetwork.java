@@ -1,15 +1,40 @@
 package sk.sochuliak.barabasi.network;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+
 
 public class ArrayNetwork extends NetworkBase implements Network {
+	
+	/**
+	 * Initial size of incidenceMatrix.
+	 */
+	private static final int INITIAL_SIZE = 1;
 
+	/**
+	 * Indexes of nodes.
+	 */
+	private int[] nodesIndexes;
+	
 	/**
 	 * Incidence matrix.
 	 */
 	private int[][] incidenceMatrix;
 	
+	/**
+	 * Number of nodes.
+	 */
+	private int numberOfNodes = 0;
+	
 	public ArrayNetwork() {
+		this.nodesIndexes = new int[ArrayNetwork.INITIAL_SIZE];
+		
+		this.incidenceMatrix = new int[ArrayNetwork.INITIAL_SIZE][ArrayNetwork.INITIAL_SIZE];
+		for (int i = 0; i < this.incidenceMatrix.length; i++) {
+			Arrays.fill(this.incidenceMatrix[i], 0);
+		}
 	}
 	
 	public static Network buildNetwork(int nodesCount, int edgesCount) {
@@ -19,13 +44,37 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public boolean addNode(int nodeId) {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.containsNode(nodeId)) {
+			return false;
+		}
+		
+		if (this.numberOfNodes == this.nodesIndexes.length) {
+			this.makeTwoTimesLargerNodesIndexesAndIncidenceMatrix();
+		}
+		
+		this.nodesIndexes[this.numberOfNodes] = nodeId;
+		this.numberOfNodes++;
+		return true;
 	}
-
+	
 	@Override
 	public boolean addEdge(int nodeId1, int nodeId2) {
-		// TODO Auto-generated method stub
+		if (nodeId1 == nodeId2) {
+			return false;
+		}
+		
+		int indexOfNode1 = this.getIndexOfNode(nodeId1);
+		int indexOfNode2 = this.getIndexOfNode(nodeId2);
+		if (indexOfNode1 != -1 && indexOfNode2 != -1) {
+			if (this.incidenceMatrix[indexOfNode1][indexOfNode2] == 1 
+					&& this.incidenceMatrix[indexOfNode2][indexOfNode1] == 1) {
+				return false;
+			} else {
+				this.incidenceMatrix[indexOfNode1][indexOfNode2] = 1;
+				this.incidenceMatrix[indexOfNode2][indexOfNode1] = 1;
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -43,8 +92,31 @@ public class ArrayNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
-		// TODO Auto-generated method stub
-		return 0;
+		int[] indexesOfNodesIds = this.getIndexesOfNodes(nodesIds);
+		
+		int numberOfEdges = 0;
+		List<String> countedEdges = new ArrayList<String>();
+		for (int indexOfNode1 : indexesOfNodesIds) {
+			for (int indexOfNode2 : indexesOfNodesIds) {
+				if (indexOfNode1 != indexOfNode2) {
+					
+					String edgeId = "";
+					if (indexOfNode1 < indexOfNode2) {
+						edgeId = indexOfNode1 + "|" + indexOfNode2;
+					} else {
+						edgeId = indexOfNode2 + "|" + indexOfNode1;
+					}
+					
+					if (!countedEdges.contains(edgeId)) {
+						if (this.isEdgeBetweenNodes(indexOfNode1, indexOfNode2)) {
+							numberOfEdges++;
+							countedEdges.add(edgeId);
+						}
+					}
+				}
+			}
+		}
+		return numberOfEdges;
 	}
 
 	@Override
@@ -54,31 +126,123 @@ public class ArrayNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int[] getAdjacentNodesIds(int nodeId) {
-		// TODO Auto-generated method stub
-		return null;
+		int adjacentNodesCount = this.getAdjacentNodesCount(nodeId);
+		int[] result = new int[adjacentNodesCount];
+		if (adjacentNodesCount > 0) {
+			int pointer = 0; 
+			
+			int indexOfNode = this.getIndexOfNode(nodeId);
+			for (int i = 0; i < this.incidenceMatrix[indexOfNode].length; i++) {
+				if (this.incidenceMatrix[indexOfNode][i] == 1) {
+					result[pointer] = this.getNodeIdAtIndex(i);
+					pointer++;
+				}
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public int getAdjacentNodesCount(int nodeId) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		int indexOfNode = this.getIndexOfNode(nodeId);
+		for (int i = 0; i < this.incidenceMatrix[indexOfNode].length; i++) {
+			if (this.incidenceMatrix[indexOfNode][i] == 1) {
+				result++;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public boolean isEdgeBetweenNodes(int nodeId1, int nodeId2) {
-		// TODO Auto-generated method stub
-		return false;
+		int indexOfNode1 = this.getIndexOfNode(nodeId1);
+		int indexOfNode2 = this.getIndexOfNode(nodeId2);
+		
+		if (indexOfNode1 == -1 || indexOfNode2 == -1) {
+			return false;
+		} else {
+			return this.incidenceMatrix[indexOfNode1][indexOfNode2] == 1 
+					&& this.incidenceMatrix[indexOfNode2][indexOfNode1] == 1;
+		}
 	}
 	
 	@Override
 	public int getNumberOfNodes() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.numberOfNodes;
 	}
 
 	@Override
 	public boolean containsNode(int nodeId) {
-		// TODO Auto-generated method stub
+		for (int i = 0; i < this.numberOfNodes; i++) {
+			if (this.nodesIndexes[i] == nodeId) {
+				return true;
+			}
+		}
 		return false;
+	}
+	
+	/**
+	 * Makes nodesIndexes array and incidenceMatrix two times larger.
+	 */
+	private void makeTwoTimesLargerNodesIndexesAndIncidenceMatrix() {
+		int oldSize = this.nodesIndexes.length;
+		int newSize = oldSize * 2;
+		
+		int[] newNodesIndexes = new int[newSize];
+		for (int i = 0; i < this.getNumberOfNodes(); i++) {
+			newNodesIndexes[i] = this.nodesIndexes[i];
+		}
+		this.nodesIndexes = newNodesIndexes;
+		
+		int[][] newIncidenceMatrix = new int[newSize][newSize];
+		for (int i = 0; i < newIncidenceMatrix.length; i++) {
+			Arrays.fill(newIncidenceMatrix[i], 0);
+			if (i < this.getNumberOfNodes()) {
+				for (int j = 0; j < this.getNumberOfNodes(); j++) {
+					newIncidenceMatrix[i][j] = this.incidenceMatrix[i][j];
+				}
+			}
+		}
+		this.incidenceMatrix = newIncidenceMatrix;
+	}
+	
+	/**
+	 * Returns index of node in nodesIndexes array.
+	 * 
+	 * @param nodeId Id of node
+	 * @return Index of node if contains, -1 otherwise
+	 */
+	private int getIndexOfNode(int nodeId) {
+		for (int i = 0; i < this.numberOfNodes; i++) {
+			if (this.nodesIndexes[i] == nodeId) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Returns array of nodes indexes in nodesIndexes array.
+	 * 
+	 * @param nodesIds Ids of nodes
+	 * @return Array of nodes indexes
+	 */
+	private int[] getIndexesOfNodes(int[] nodesIds) {
+		int[] result = new int[nodesIds.length];
+		for (int i = 0; i < nodesIds.length; i++) {
+			result[i] = this.getIndexOfNode(nodesIds[i]);
+		}
+		return result;
+	}
+	
+	/**
+	 * Return id of node from nodesIndexes. 
+	 * 
+	 * @param indexOfNode Index of node
+	 * @return Id of node
+	 */
+	private int getNodeIdAtIndex(int indexOfNode) {
+		return this.nodesIndexes[indexOfNode];
 	}
 }
