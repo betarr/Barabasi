@@ -138,6 +138,10 @@ public class MapNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public int getNumberOfEdges() {
-		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+		int result = 0;
+		for (Integer nodeId : this.nodes.keySet()) {
+			result += this.nodes.get(nodeId).size();
+		}
+		return result / 2;
 	}
 }

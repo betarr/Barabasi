@@ -149,7 +149,11 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public int getNumberOfEdges() {
-		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+		int result = 0;
+		for (ObjectedNode node : this.nodes) {
+			result += node.getAdjacentNodesCount();
+		}
+		return result / 2;
 	}
 	
 	/**

@@ -1,5 +1,6 @@
 package sk.sochuliak.barabasi.util;
 
+
 public class CommonUtils {
 	
 	/**

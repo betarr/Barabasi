@@ -11,7 +11,7 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	/**
 	 * Initial size of incidenceMatrix.
 	 */
-	private static final int INITIAL_SIZE = 1;
+	private static final int INITIAL_SIZE = 1000;
 
 	/**
 	 * Indexes of nodes.
@@ -200,7 +200,15 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public int getNumberOfEdges() {
-		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+		int result = 0;
+		for (int i = 0; i < this.numberOfNodes; i++) {
+			for (int j = 0; j < this.numberOfNodes; j++) {
+				if (this.incidenceMatrix[i][j] == 1) {
+					result++;
+				}
+			}
+		}
+		return result / 2;
 	}
 	
 	/**

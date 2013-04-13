@@ -9,7 +9,7 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 	/**
 	 * Initial size of nodesIds array.
 	 */
-	private static final int INITIAL_SIZE = 1;
+	private static final int INITIAL_SIZE = 1000;
 	
 	/**
 	 * Ids of nodes.
@@ -195,7 +195,8 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public int getNumberOfEdges() {
-		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+		int result =  this.edges.size();
+		return result;
 	}
 
 }

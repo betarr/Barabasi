@@ -32,7 +32,7 @@ public abstract class NetworkBase {
 		int[] allNodesIds = network.getNodesIds();
 		int allNodesCount = allNodesIds.length;
 		
-		if (allNodesCount < nodesCountToCalculate) {
+		if (allNodesCount <= nodesCountToCalculate) {
 			int[] result = new int[allNodesCount];
 			for (int i = 0; i < allNodesCount; i++) {
 				result[i] = allNodesIds[i];
@@ -45,9 +45,9 @@ public abstract class NetworkBase {
 		int allEdgesCount = network.getNumberOfEdges();
 		
 		int numberOfCalculatedNodes = 0;
+		double iteration = (double) allNodesCount / (double) (allEdgesCount*2);
 		while (numberOfCalculatedNodes != nodesCountToCalculate) {
 			double randomValue = Math.random() * allNodesCount;
-			double iteration = (double) allNodesCount / allEdgesCount*2;
 			int areaCounter = 0;
 			for (int i = 0; i < allNodesCount; i++) {
 				int candidateNodeId = allNodesIds[i];
@@ -64,8 +64,7 @@ public abstract class NetworkBase {
 				areaCounter += adjacentNodesCount;
 			}
 		}
-		
-		return null;
+		return result;
 		
 	}
 	
@@ -73,7 +72,7 @@ public abstract class NetworkBase {
 		int[] allNodesIds = network.getNodesIds();
 		int allNodesCount = allNodesIds.length;
 		
-		if (allNodesCount < nodesCountToCalculate) {
+		if (allNodesCount <= nodesCountToCalculate) {
 			int[] result = new int[allNodesCount];
 			for (int i = 0; i < allNodesCount; i++) {
 				result[i] = allNodesIds[i];
