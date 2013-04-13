@@ -98,4 +98,9 @@ public interface Network {
 	 * @return Ids of nodes
 	 */
 	public int[] getNodesIds();
+	
+	/**
+	 * Returns number of edges in network.
+	 */
+	public int getNumberOfEdges();
 }

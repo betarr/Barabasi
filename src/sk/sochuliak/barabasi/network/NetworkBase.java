@@ -6,16 +6,24 @@ public abstract class NetworkBase {
 		return ((numberOfNodes-1)*numberOfNodes) / 2;
 	}
 	
-	public int[] calculateAdjacentNodesDegreeDriven(int nodesCountToCalculate, Network network) {
-		int[] adjacentNodesIds = new int[nodesCountToCalculate];
+	public int[] calculateAdjacentNodesDegreeDriven(int nodesCountToCalculate, Network network) {		
+		int[] allNodes = network.getNodesIds();
+		int allNodesCount = allNodes.length;
 		
-		int allNodesCount = network.getNumberOfNodes();
 		if (allNodesCount < nodesCountToCalculate) {
-			int pointer = 0;
-			//for (network.getn)
+			int[] result = new int[allNodesCount];
+			for (int i = 0; i < allNodesCount; i++) {
+				result[i] = allNodes[i];
+			}
+			return result;
 		}
 		
-		int numberOfCalculatedNodes = 0;		
+		int[] result = new int[nodesCountToCalculate];
+		int numberOfCalculatedNodes = 0;
+		while (numberOfCalculatedNodes != nodesCountToCalculate) {
+			double randomValue = Math.random() * allNodesCount;
+			//double iteration = (double) allNodesCount / 
+		}
 		
 		return null;
 		

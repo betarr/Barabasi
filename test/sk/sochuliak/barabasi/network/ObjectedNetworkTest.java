@@ -155,6 +155,18 @@ public class ObjectedNetworkTest {
 		assertEquals(expectedIds, actualIds);
 	}
 	
+	@Test
+	public void testGetNumberOfEdges() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		
+		int expectedNumberOfEdges = 3;
+		int actualNumberOfEdges = this.network.getNumberOfEdges();
+		assertEquals(expectedNumberOfEdges, actualNumberOfEdges);
+	}
+	
 	private SortedSet<Integer> getArrayAsSet(int[] nodesIds) {
 		SortedSet<Integer> result = new TreeSet<Integer>();
 		for (int nodeId : nodesIds) {

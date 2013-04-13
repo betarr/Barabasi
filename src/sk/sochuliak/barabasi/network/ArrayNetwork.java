@@ -191,6 +191,11 @@ public class ArrayNetwork extends NetworkBase implements Network {
 		return result;
 	}
 	
+	@Override
+	public int getNumberOfEdges() {
+		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+	}
+	
 	/**
 	 * Makes nodesIndexes array and incidenceMatrix two times larger.
 	 */

@@ -129,6 +129,22 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 		return false;
 	}
 	
+	@Override
+	public int[] getNodesIds() {
+		int[] result = new int[this.getNumberOfNodes()];
+		int pointer = 0;
+		for (ObjectedNode node : this.nodes) {
+			result[pointer] = node.getId();
+			pointer++;
+		}
+		return result;
+	}
+	
+	@Override
+	public int getNumberOfEdges() {
+		return this.getNumberOfExistingEdgesBetweenNodes(this.getNodesIds());
+	}
+	
 	/**
 	 * Returns node identified by nodeId.
 	 * @param nodeId Id of node
@@ -142,16 +158,4 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 		}
 		return null;
 	}
-
-	@Override
-	public int[] getNodesIds() {
-		int[] result = new int[this.getNumberOfNodes()];
-		int pointer = 0;
-		for (ObjectedNode node : this.nodes) {
-			result[pointer] = node.getId();
-			pointer++;
-		}
-		return result;
-	}
-
 }
