@@ -1,8 +1,6 @@
 package sk.sochuliak.barabasi.network;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 
@@ -102,28 +100,14 @@ public class ArrayNetwork extends NetworkBase implements Network {
 		int[] indexesOfNodesIds = this.getIndexesOfNodes(nodesIds);
 		
 		int numberOfEdges = 0;
-		List<String> countedEdges = new ArrayList<String>();
-		for (int indexOfNode1 : indexesOfNodesIds) {
-			for (int indexOfNode2 : indexesOfNodesIds) {
-				if (indexOfNode1 != indexOfNode2) {
-					
-					String edgeId = "";
-					if (indexOfNode1 < indexOfNode2) {
-						edgeId = indexOfNode1 + "|" + indexOfNode2;
-					} else {
-						edgeId = indexOfNode2 + "|" + indexOfNode1;
-					}
-					
-					if (!countedEdges.contains(edgeId)) {
-						if (this.isEdgeBetweenNodes(indexOfNode1, indexOfNode2)) {
-							numberOfEdges++;
-							countedEdges.add(edgeId);
-						}
-					}
+		for (int indexOfNode : indexesOfNodesIds) {
+			for (int i = 0; i < this.numberOfNodes; i++) {
+				if (this.incidenceMatrix[indexOfNode][i] == 1) {
+					numberOfEdges++;
 				}
 			}
 		}
-		return numberOfEdges;
+		return numberOfEdges / 2;
 	}
 
 	@Override

@@ -10,7 +10,7 @@ import sk.sochuliak.barabasi.network.NodeToNodeNetwork;
 import sk.sochuliak.barabasi.network.ObjectedNetwork;
 
 public class PerformanceDegreeDrivenTest {
-	public static final int NODES = 30000;
+	public static final int NODES = 5000;
 	public static final int EDGES = 2;
 
 	public static void main(String[] args) {

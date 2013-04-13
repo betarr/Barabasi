@@ -84,29 +84,17 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
 		int numberOfEdges = 0;
-		List<String> countedEdges = new ArrayList<String>();
 		
 		for (int nodeId1 : nodesIds) {
 			for (int nodeId2 : nodesIds) {
 				if (nodeId1 != nodeId2) {
-					
-					String edgeId = "";
-					if (nodeId1 < nodeId2) {
-						edgeId = nodeId1 + "|" + nodeId2;
-					} else {
-						edgeId = nodeId2 + "|" + nodeId1;
-					}
-					
-					if (!countedEdges.contains(edgeId)) {
-						if (this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
-							numberOfEdges++;
-							countedEdges.add(edgeId);
-						}
+					if (this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
+						numberOfEdges++;
 					}
 				}
 			}
 		}
-		return numberOfEdges;
+		return numberOfEdges / 2;
 	}
 
 	@Override

@@ -10,6 +10,7 @@ public abstract class NetworkBase {
 	
 	public static Network buildNetwork(Network network, int nodesCount, int edgesCount, int methodDriven) {
 		for (int i = 0; i < nodesCount; i++) {
+			System.out.println(i);
 			int[] adjacentNodes;
 			if (methodDriven == NetworkBase.DEGREE_DRIVEN) {
 				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(edgesCount);
@@ -83,8 +84,8 @@ public abstract class NetworkBase {
 		int[] result = new int[nodesCountToCalculate];
 		Arrays.fill(result, -1);
 		
-		double[] clasterRatios = this.calculateClasterRatios(allNodesIds, network);
-		double sumOfClusterRatios = CommonUtils.sumOfDoubleArray(clasterRatios);
+		double[] clusterRatios = NetworkUtils.calculateClusterRatios(allNodesIds, network);
+		double sumOfClusterRatios = CommonUtils.sumOfDoubleArray(clusterRatios);
 		
 		int numberOfCalculatedNodes = 0;
 		while (numberOfCalculatedNodes != nodesCountToCalculate) {
@@ -92,9 +93,9 @@ public abstract class NetworkBase {
 			double areaCounter = 0d;
 			for (int i = 0; i < allNodesIds.length; i++) {
 				int candidateNodeId = allNodesIds[i];
-				double candidatesClasterRatio = clasterRatios[i];
+				double candidatesClusterRatio = clusterRatios[i];
 				double rangeFrom = areaCounter;
-				double rangeTo = areaCounter + candidatesClasterRatio;
+				double rangeTo = areaCounter + candidatesClusterRatio;
 				if (randomValue >= rangeFrom && randomValue < rangeTo) {
 					if (!CommonUtils.isNodeIdInNodesIdsArray(candidateNodeId, result)) {
 						result[numberOfCalculatedNodes] = candidateNodeId;
@@ -104,19 +105,6 @@ public abstract class NetworkBase {
 				}
 				areaCounter = rangeTo;
 			}
-		}
-		return result;
-	}
-	
-	private double[] calculateClasterRatios(int[] nodesIds, Network network) {
-		double[] result = new double[nodesIds.length];
-		for (int i = 0; i < nodesIds.length; i++) {
-			int nodeId = nodesIds[i];
-			int[] adjacentNodes = network.getAdjacentNodesIds(nodeId);
-			int numberOfExistingEdges = network.getNumberOfExistingEdgesBetweenNodes(adjacentNodes);
-			int numberOfAllEdges = network.getNumberOfAllPossibleEdgesBetweenNodes(nodesIds);
-			double clasterRatio = (double) numberOfExistingEdges / (double) numberOfAllEdges;
-			result[i] = clasterRatio;
 		}
 		return result;
 	}

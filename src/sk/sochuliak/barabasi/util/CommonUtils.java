@@ -1,6 +1,8 @@
 package sk.sochuliak.barabasi.util;
 
 
+
+
 public class CommonUtils {
 	
 	/**
@@ -32,5 +34,13 @@ public class CommonUtils {
 		}
 		return false;
 	}
-
+	
+	public static int getIndexOfNodeIdInNodesIdsArray(int nodeId, int[] nodesIds) {
+		for (int i = 0; i < nodesIds.length; i++) {
+			if (nodesIds[i] == nodeId) {
+				return i;
+			}
+		}
+		return -1;
+	}
 }

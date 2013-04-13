@@ -5,11 +5,14 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import sk.sochuliak.barabasi.controller.ControllerService;
 
 public class InfoPanel extends JPanel {
 	private static final long serialVersionUID = 2490770620560535781L;
@@ -93,9 +96,9 @@ public class InfoPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (startPoint != null && endPoint != null) {
-					//List<double[]> points = ControllerService.getGraphController().getPointsBetweenXYItemsEntities(startPoint[0], endPoint[0]);
-					//List<double[]> linearRegressionPoints = ControllerService.getGraphController().computeLine(points);
-					//ControllerService.getGraphController().drawLinearRegression(linearRegressionPoints);
+					List<double[]> points = ControllerService.getGraphController().getPointsBetweenXYItemsEntities(startPoint[0], endPoint[0]);
+					List<double[]> linearRegressionPoints = ControllerService.getGraphController().computeLine(points);
+					ControllerService.getGraphController().drawLinearRegression(linearRegressionPoints);
 				} else {
 					System.err.println("Nebol zvoleny zaciatocny alebo koncovy bod!");
 				}
