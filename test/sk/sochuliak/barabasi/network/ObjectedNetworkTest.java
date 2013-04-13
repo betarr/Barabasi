@@ -100,14 +100,6 @@ public class ObjectedNetworkTest {
 		
 		assertEquals(expectedAdjacentNodesIdsAsSet, actualAdjacentNodesIdsAsSet);
 	}
-	
-	private SortedSet<Integer> getArrayAsSet(int[] nodesIds) {
-		SortedSet<Integer> result = new TreeSet<Integer>();
-		for (int nodeId : nodesIds) {
-			result.add(nodeId);
-		}
-		return result;
-	}
 
 	@Test
 	public void testGetAdjacentNodesCount() {
@@ -150,4 +142,25 @@ public class ObjectedNetworkTest {
 		assertTrue(this.network.containsNode(4));
 		assertFalse(this.network.containsNode(5));
 	}
+	
+	@Test
+	public void testGetNodesIds() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		
+		SortedSet<Integer> expectedIds = this.getArrayAsSet(new int[]{0, 1, 2, 3, 4});
+		SortedSet<Integer> actualIds = this.getArrayAsSet(this.network.getNodesIds());
+		assertEquals(expectedIds, actualIds);
+	}
+	
+	private SortedSet<Integer> getArrayAsSet(int[] nodesIds) {
+		SortedSet<Integer> result = new TreeSet<Integer>();
+		for (int nodeId : nodesIds) {
+			result.add(nodeId);
+		}
+		return result;
+	}
+
 }

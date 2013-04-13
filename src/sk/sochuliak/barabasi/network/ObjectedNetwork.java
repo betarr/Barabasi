@@ -143,4 +143,15 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 		return null;
 	}
 
+	@Override
+	public int[] getNodesIds() {
+		int[] result = new int[this.getNumberOfNodes()];
+		int pointer = 0;
+		for (ObjectedNode node : this.nodes) {
+			result[pointer] = node.getId();
+			pointer++;
+		}
+		return result;
+	}
+
 }

@@ -117,5 +117,15 @@ public class MapNetwork extends NetworkBase implements Network {
 	public boolean containsNode(int nodeId) {
 		return this.nodes.get(nodeId) != null;
 	}
-
+	
+	@Override
+	public int[] getNodesIds() {
+		int[] result = new int[this.getNumberOfNodes()];
+		int pointer = 0;
+		for (Integer nodeId : this.nodes.keySet()) {
+			result[pointer] = nodeId;
+			pointer++;
+		}
+		return result;
+	}
 }

@@ -91,4 +91,11 @@ public interface Network {
 	 * @return True if network contains node, false otherwise
 	 */
 	public boolean containsNode(int nodeId);
+	
+	/**
+	 * Returns ids of all nodes.
+	 * 
+	 * @return Ids of nodes
+	 */
+	public int[] getNodesIds();
 }

@@ -182,6 +182,15 @@ public class ArrayNetwork extends NetworkBase implements Network {
 		return false;
 	}
 	
+	@Override
+	public int[] getNodesIds() {
+		int[] result = new int[this.numberOfNodes];
+		for (int i = 0; i < this.numberOfNodes; i++) {
+			result[i] = this.nodesIndexes[i];
+		}
+		return result;
+	}
+	
 	/**
 	 * Makes nodesIndexes array and incidenceMatrix two times larger.
 	 */

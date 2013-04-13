@@ -177,4 +177,13 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		this.nodesIds = newNodesIds;
 	}
 
+	@Override
+	public int[] getNodesIds() {
+		int[] result = new int[this.getNumberOfNodes()];
+		for (int i = 0; i < this.numberOfNodes; i++) {
+			result[i] = this.nodesIds[i];
+		}
+		return result;
+	}
+
 }
