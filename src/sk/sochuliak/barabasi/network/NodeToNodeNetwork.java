@@ -32,9 +32,18 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		this.edges = new ArrayList<int[]>();
 	}
 	
-	public static Network buildNetwork(int nodesCount, int edgesCount) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Build network with specific parameters.
+	 * 
+	 * @param nodesCount Number of nodes in network
+	 * @param edgesCount Number of edges every node should have
+	 * @param methodDriven Method of preferential selection of nodes to connect
+	 * @return Network
+	 */
+	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven) {
+		Network network = new NodeToNodeNetwork();
+		network = NetworkBase.buildNetwork(network, nodesCount, edgesCount, methodDriven);
+		return network;
 	}
 
 	@Override

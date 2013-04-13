@@ -5,6 +5,24 @@ import java.util.Arrays;
 import sk.sochuliak.barabasi.util.CommonUtils;
 
 public abstract class NetworkBase {
+	public static final int DEGREE_DRIVEN = 0;
+	public static final int CLUSTER_DRIVEN = 1;
+	
+	public static Network buildNetwork(Network network, int nodesCount, int edgesCount, int methodDriven) {
+		for (int i = 0; i < nodesCount; i++) {
+			int[] adjacentNodes;
+			if (methodDriven == NetworkBase.DEGREE_DRIVEN) {
+				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(edgesCount);
+			} else {
+				adjacentNodes = network.calculateAdjacentNodesClusterDriven(edgesCount);
+			}
+			network.addNode(i);
+			for (int j = 0; j < adjacentNodes.length; j++) {
+				network.addEdge(i, adjacentNodes[j]);
+			}
+		}
+		return network;
+	}
 	
 	protected int calculateNumberOfAllPossibleEdgesBetweenNodes(int numberOfNodes) {
 		return ((numberOfNodes-1)*numberOfNodes) / 2;
