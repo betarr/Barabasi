@@ -24,18 +24,18 @@ public interface Network {
 	/**
 	 * Returns array of node ids calculated by probability depending on degree of nodes. 
 	 * 
-	 * @param notesCount Number of calculated nodes
+	 * @param nodesCount Number of calculated nodes
 	 * @return array of node ids
 	 */
-	public int[] calculateAdjacentNodesDegreeDriven(int notesCount);
+	public int[] calculateAdjacentNodesDegreeDriven(int nodesCount);
 	
 	/**
 	 * Returns array of node ids calculated by probability depending on cluster of nodes.
 	 * 
-	 * @param notesCount Number of calculated nodes 
+	 * @param nodesCount Number of calculated nodes 
 	 * @return array of node ids
 	 */
-	public int[] calculateAdjacentNodesClusterDriven(int notesCount);
+	public int[] calculateAdjacentNodesClusterDriven(int nodesCount);
 	
 	/**
 	 * Returns number of existing edges between nodes identified by their ids.

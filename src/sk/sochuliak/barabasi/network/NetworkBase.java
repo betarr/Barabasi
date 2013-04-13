@@ -1,5 +1,7 @@
 package sk.sochuliak.barabasi.network;
 
+import java.util.Arrays;
+
 public abstract class NetworkBase {
 	
 	protected int calculateNumberOfAllPossibleEdgesBetweenNodes(int numberOfNodes) {
@@ -19,17 +21,44 @@ public abstract class NetworkBase {
 		}
 		
 		int[] result = new int[nodesCountToCalculate];
+		Arrays.fill(result, -1);
+		int allEdgesCount = network.getNumberOfEdges();
+		
 		int numberOfCalculatedNodes = 0;
 		while (numberOfCalculatedNodes != nodesCountToCalculate) {
 			double randomValue = Math.random() * allNodesCount;
-			//double iteration = (double) allNodesCount / 
+			double iteration = (double) allNodesCount / allEdgesCount*2;
+			int areaCounter = 0;
+			for (int i = 0; i < allNodesCount; i++) {
+				int candidateNodeId = allNodes[i];
+				int adjacentNodesCount = network.getAdjacentNodesCount(candidateNodeId);
+				double rangeFrom = areaCounter * iteration;
+				double rangeTo = (areaCounter + adjacentNodesCount) * iteration;
+				if (randomValue >= rangeFrom && randomValue < rangeTo) {
+					if (!this.isNodeIdInNodesIdsArray(candidateNodeId, result)) {
+						result[numberOfCalculatedNodes] = candidateNodeId;
+						numberOfCalculatedNodes++;
+						break;
+					}
+				}
+				areaCounter += adjacentNodesCount;
+			}
 		}
 		
 		return null;
 		
 	}
+	
+	private boolean isNodeIdInNodesIdsArray(int nodeId, int[] nodesIds) {
+		for (int i = 0; i < nodesIds.length; i++) {
+			if (nodesIds[i] == nodeId) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-	public int[] calculateAdjacentNodesClusterDriven(int notesCount) {
+	public int[] calculateAdjacentNodesClusterDriven(int nodesCount) {
 		// TODO Auto-generated method stub
 		return null;
 	}

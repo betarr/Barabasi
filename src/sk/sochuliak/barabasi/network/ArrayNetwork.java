@@ -79,13 +79,12 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	}
 
 	@Override
-	public int[] calculateAdjacentNodesDegreeDriven(int notesCount) {
-		// TODO Auto-generated method stub
-		return null;
+	public int[] calculateAdjacentNodesDegreeDriven(int nodesCount) {
+		return this.calculateAdjacentNodesDegreeDriven(nodesCount, this);
 	}
 
 	@Override
-	public int[] calculateAdjacentNodesClusterDriven(int notesCount) {
+	public int[] calculateAdjacentNodesClusterDriven(int nodesCount) {
 		// TODO Auto-generated method stub
 		return null;
 	}
