@@ -10,7 +10,6 @@ public abstract class NetworkBase {
 	
 	public static Network buildNetwork(Network network, int nodesCount, int edgesCount, int methodDriven) {
 		for (int i = 0; i < nodesCount; i++) {
-			System.out.println(i);
 			int[] adjacentNodes;
 			if (methodDriven == NetworkBase.DEGREE_DRIVEN) {
 				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(edgesCount);
