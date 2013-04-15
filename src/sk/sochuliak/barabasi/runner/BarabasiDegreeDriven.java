@@ -40,8 +40,8 @@ public class BarabasiDegreeDriven {
 		for (int i = 0; i < degreesList.size(); i++) {
 			double x = (double) degreesList.get(i);
 			double y = this.degreeDistribution.get(degreesList.get(i));
-			double logx = (x == 0) ? 0 : Math.log(x);
-			double logy = (y == 0) ? 0 : Math.log(y);
+			double logx = (x == 0) ? 0 : Math.log10(x);
+			double logy = (y == 0) ? 0 : Math.log10(y);
 			points.add(new double[]{logx, logy});
 		}
 		
