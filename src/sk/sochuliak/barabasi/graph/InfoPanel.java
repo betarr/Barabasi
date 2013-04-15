@@ -34,7 +34,7 @@ public class InfoPanel extends JPanel {
 	
 	private JButton calculateButton = new JButton("Vypocitat");
 	
-	private JLabel resultLabel = new JLabel("Vysledok");
+	private JLabel resultLabel = new JLabel("Skalovaci exponent");
 	private JLabel resultValueLabel = new JLabel(" ");
 	
 	private DecimalFormat decimalFormat = new DecimalFormat("#0.00");
