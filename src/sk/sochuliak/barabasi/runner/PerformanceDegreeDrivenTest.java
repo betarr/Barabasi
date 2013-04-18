@@ -14,10 +14,10 @@ public class PerformanceDegreeDrivenTest {
 	private static final int EDGES = 2;
 
 	public static void main(String[] args) {
-		PerformanceDegreeDrivenTest.buildArrayNetwork();
+//		PerformanceDegreeDrivenTest.buildArrayNetwork();
 		PerformanceDegreeDrivenTest.buildMapNetwork();
-		PerformanceDegreeDrivenTest.buildNodeToNodeNetwork();
-		PerformanceDegreeDrivenTest.buildObjectedNetwork();
+//		PerformanceDegreeDrivenTest.buildNodeToNodeNetwork();
+//		PerformanceDegreeDrivenTest.buildObjectedNetwork();
 	}
 	
 	public static void buildArrayNetwork() {

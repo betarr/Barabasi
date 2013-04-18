@@ -10,14 +10,14 @@ import sk.sochuliak.barabasi.network.NodeToNodeNetwork;
 import sk.sochuliak.barabasi.network.ObjectedNetwork;
 
 public class PerformanceClusterDrivenTest {
-	private static final int NODES = 5000;
+	private static final int NODES = 25000;
 	private static final int EDGES = 2;
 
 	public static void main(String[] args) {
-		PerformanceClusterDrivenTest.buildArrayNetwork();
+//		PerformanceClusterDrivenTest.buildArrayNetwork();
 		PerformanceClusterDrivenTest.buildMapNetwork();
-		PerformanceClusterDrivenTest.buildNodeToNodeNetwork();
-		PerformanceClusterDrivenTest.buildObjectedNetwork();
+//		PerformanceClusterDrivenTest.buildNodeToNodeNetwork();
+//		PerformanceClusterDrivenTest.buildObjectedNetwork();
 	}
 	
 	public static void buildArrayNetwork() {
