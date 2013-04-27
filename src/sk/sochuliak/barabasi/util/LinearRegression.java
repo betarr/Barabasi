@@ -63,8 +63,6 @@ public class LinearRegression {
 	}
 
 	private double computeK(double[] point1, double[] point2) {
-		System.out.println(point1[0] + ", " + point1[1]);
-		System.out.println(point2[0] + ", " + point2[1]);
 		double[] s = new double[] {point2[0] - point1[0], point2[1] - point1[1]};
 		double[] n = new double[] {-(s[1]), s[0]};
 		

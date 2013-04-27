@@ -19,10 +19,14 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 	 * @param methodDriven Method of preferential selection of nodes to connect
 	 * @return Network
 	 */
-	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven) {
-		Network network = new ObjectedNetwork();
-		network = NetworkBase.buildNetwork(network, nodesCount, edgesCount, methodDriven);
-		return network;
+	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven, boolean useBuildingStatistics) {
+		NetworkBuildConfiguration config = NetworkBuildConfiguration.getInstance()
+			.setNetwork(new ObjectedNetwork())
+			.setNodesCount(nodesCount)
+			.setEdgesCount(edgesCount)
+			.setMethodDriven(methodDriven)
+			.setUseBuildingStatistics(useBuildingStatistics);
+		return NetworkBase.buildNetwork(config);
 	}
 	
 	@Override
@@ -65,9 +69,14 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
+		ObjectedNode[] nodes = this.getNodesByIds(nodesIds);
+		
 		int numberOfEdges = 0;
-		for (int nodeId : nodesIds) {
-			numberOfEdges += this.getNodeById(nodeId).getAdjacentNodesCount();
+		
+		for (ObjectedNode node1 : nodes) {
+			for (ObjectedNode node2 : nodes) {
+				numberOfEdges += node1.hasEdgeTo(node2) ? 1 : 0;
+			}
 		}
 		return numberOfEdges / 2;
 	}
@@ -137,8 +146,19 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 		return result / 2;
 	}
 	
+	@Override
+	public double getAverageNodeDegree() {
+		return NetworkUtils.calculateAverageNodeDegree(this);
+	}
+
+	@Override
+	public double getAverageClusterCoefficient() {
+		return NetworkUtils.calculateAverageClusteRatios(this);
+	}
+	
 	/**
 	 * Returns node identified by nodeId.
+	 * 
 	 * @param nodeId Id of node
 	 * @return Node if exists, null otherwise
 	 */
@@ -149,5 +169,19 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 			}
 		}
 		return null;
+	}
+	
+	/**
+	 * Returns array of nodes by their ids.
+	 * 
+	 * @param nodesIds Nodes ids
+	 * @return Array of nodes
+	 */
+	private ObjectedNode[] getNodesByIds(int[] nodesIds) {
+		ObjectedNode[] result = new ObjectedNode[nodesIds.length];
+		for (int i = 0; i < nodesIds.length; i++) {
+			result[i] = this.getNodeById(nodesIds[i]);
+		}
+		return result;
 	}
 }

@@ -167,6 +167,31 @@ public class ObjectedNetworkTest {
 		assertEquals(expectedNumberOfEdges, actualNumberOfEdges);
 	}
 	
+	@Test
+	public void testGetAverageNodeDegree() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		
+		Double expectedAverageNodeDegree = 1.2;
+		Double actualAverageNodeDegree = this.network.getAverageNodeDegree();
+		assertEquals(expectedAverageNodeDegree, actualAverageNodeDegree);
+	}
+	
+	@Test
+	public void testGetAverageClusterCoefficient() {
+		this.network.addNode(3);
+		this.network.addNode(4);
+		this.network.addEdge(2, 4);
+		this.network.addEdge(1, 4);
+		this.network.addEdge(0, 4);
+		
+		Double expectedAverageClusterCoefficient = 7d/15d;
+		Double actualAverageClusterCoefficient = this.network.getAverageClusterCoefficient();
+		assertEquals(expectedAverageClusterCoefficient, actualAverageClusterCoefficient);
+	}
+	
 	private SortedSet<Integer> getArrayAsSet(int[] nodesIds) {
 		SortedSet<Integer> result = new TreeSet<Integer>();
 		for (int nodeId : nodesIds) {

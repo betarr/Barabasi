@@ -21,10 +21,14 @@ public class MapNetwork extends NetworkBase implements Network {
 	 * @param methodDriven Method of preferential selection of nodes to connect
 	 * @return Network
 	 */
-	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven) {
-		Network network = new MapNetwork();
-		network = NetworkBase.buildNetwork(network, nodesCount, edgesCount, methodDriven);
-		return network;
+	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven, boolean useBuildingStatistics) {
+		NetworkBuildConfiguration config = NetworkBuildConfiguration.getInstance()
+			.setNetwork(new MapNetwork())
+			.setNodesCount(nodesCount)
+			.setEdgesCount(edgesCount)
+			.setMethodDriven(methodDriven)
+			.setUseBuildingStatistics(useBuildingStatistics);
+		return NetworkBase.buildNetwork(config);
 	}
 	
 	@Override
@@ -62,8 +66,10 @@ public class MapNetwork extends NetworkBase implements Network {
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
 		int numberOfEdges = 0;
-		for (int nodeId : nodesIds) {
-			numberOfEdges += this.nodes.get(nodeId).size();
+		for (int nodeId1 : nodesIds) {
+			for (int nodeId2 : nodesIds) {
+				numberOfEdges += this.nodes.get(nodeId1).contains(nodeId2) ? 1 : 0;
+			}
 		}
 		return numberOfEdges / 2;
 	}
@@ -124,5 +130,15 @@ public class MapNetwork extends NetworkBase implements Network {
 			result += this.nodes.get(nodeId).size();
 		}
 		return result / 2;
+	}
+
+	@Override
+	public double getAverageNodeDegree() {
+		return NetworkUtils.calculateAverageNodeDegree(this);
+	}
+
+	@Override
+	public double getAverageClusterCoefficient() {
+		return NetworkUtils.calculateAverageClusteRatios(this);
 	}
 }

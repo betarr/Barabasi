@@ -2,7 +2,6 @@ package sk.sochuliak.barabasi.runner;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,21 +12,21 @@ import sk.sochuliak.barabasi.graph.GraphConfiguration;
 import sk.sochuliak.barabasi.network.MapNetwork;
 import sk.sochuliak.barabasi.network.Network;
 import sk.sochuliak.barabasi.network.NetworkAnalyse;
-import sk.sochuliak.barabasi.network.NetworkBase;
+import sk.sochuliak.barabasi.network.NetworkBuildConfiguration;
 
 public class BarabasiClusterDriven {
 	
-	public static final int NODES = 5000;
-	public static final int EDGES = 2;
+	private static final int NODES = 500;
+	private static final int EDGES = 2;
+	
+	private static final boolean useBuildStatistics = true;
 	
 	Map<Integer, Double> clusterDistribution;
+	Map<Integer, Double> averageCluster;
 
 	public BarabasiClusterDriven(int nodesCount, int edgesCount) {
-		long startTime = new Date().getTime();
-		Network network = MapNetwork.buildNetwork(nodesCount, edgesCount, NetworkBase.CLUSTER_DRIVEN);
-		long endTime = new Date().getTime();
-		long time = endTime - startTime;
-		System.out.println("Network builded by " + network.getClass().getName() + " in " + time + " ms.");
+		Network network = MapNetwork.buildNetwork(nodesCount, edgesCount, NetworkBuildConfiguration.CLUSTER_DRIVEN, BarabasiClusterDriven.useBuildStatistics);
+//		System.out.println("Network builded by " + network.getClass().getName() + " in " + time + " ms.");
 		this.clusterDistribution = NetworkAnalyse.getClusterDistribution(network);
 	}
 	

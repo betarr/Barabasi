@@ -40,10 +40,14 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 	 * @param methodDriven Method of preferential selection of nodes to connect
 	 * @return Network
 	 */
-	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven) {
-		Network network = new NodeToNodeNetwork();
-		network = NetworkBase.buildNetwork(network, nodesCount, edgesCount, methodDriven);
-		return network;
+	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven, boolean useBuildingStatistics) {
+		NetworkBuildConfiguration config = NetworkBuildConfiguration.getInstance()
+			.setNetwork(new NodeToNodeNetwork())
+			.setNodesCount(nodesCount)
+			.setEdgesCount(edgesCount)
+			.setMethodDriven(methodDriven)
+			.setUseBuildingStatistics(useBuildingStatistics);
+		return NetworkBase.buildNetwork(config);
 	}
 
 	@Override
@@ -87,10 +91,8 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		
 		for (int nodeId1 : nodesIds) {
 			for (int nodeId2 : nodesIds) {
-				if (nodeId1 != nodeId2) {
-					if (this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
-						numberOfEdges++;
-					}
+				if (this.isEdgeBetweenNodes(nodeId1, nodeId2)) {
+					numberOfEdges++;
 				}
 			}
 		}
@@ -159,19 +161,6 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		return false;
 	}
 	
-	/**
-	 * Makes nodesIds array two times larger.
-	 */
-	private void appendDoubleSizeOfNodesIds() {
-		int oldSize = this.nodesIds.length;
-		int newSize = oldSize * 2;
-		int[] newNodesIds = new int[newSize];
-		for (int i = 0; i < newSize; i++) {
-			newNodesIds[i] = (i < oldSize) ? this.nodesIds[i] : -1;
-		}
-		this.nodesIds = newNodesIds;
-	}
-
 	@Override
 	public int[] getNodesIds() {
 		int[] result = new int[this.getNumberOfNodes()];
@@ -186,5 +175,27 @@ public class NodeToNodeNetwork extends NetworkBase implements Network {
 		int result =  this.edges.size();
 		return result;
 	}
+	
+	@Override
+	public double getAverageNodeDegree() {
+		return NetworkUtils.calculateAverageNodeDegree(this);
+	}
 
+	@Override
+	public double getAverageClusterCoefficient() {
+		return NetworkUtils.calculateAverageClusteRatios(this);
+	}
+	
+	/**
+	 * Makes nodesIds array two times larger.
+	 */
+	private void appendDoubleSizeOfNodesIds() {
+		int oldSize = this.nodesIds.length;
+		int newSize = oldSize * 2;
+		int[] newNodesIds = new int[newSize];
+		for (int i = 0; i < newSize; i++) {
+			newNodesIds[i] = (i < oldSize) ? this.nodesIds[i] : -1;
+		}
+		this.nodesIds = newNodesIds;
+	}
 }

@@ -5,16 +5,18 @@ import java.util.Arrays;
 import sk.sochuliak.barabasi.util.CommonUtils;
 
 public abstract class NetworkBase {
-	public static final int DEGREE_DRIVEN = 0;
-	public static final int CLUSTER_DRIVEN = 1;
 	
-	public static Network buildNetwork(Network network, int nodesCount, int edgesCount, int methodDriven) {
-		for (int i = 0; i < nodesCount; i++) {
+	public static Network buildNetwork(NetworkBuildConfiguration config) {
+		Network network = config.getNetwork();
+		for (int i = 0; i < config.getNodesCount(); i++) {
 			int[] adjacentNodes;
-			if (methodDriven == NetworkBase.DEGREE_DRIVEN) {
-				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(edgesCount);
+			if (config.getMethodDriven() == NetworkBuildConfiguration.DEGREE_DRIVEN) {
+				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(config.getEdgesCount());
+			} else if (config.getMethodDriven() == NetworkBuildConfiguration.CLUSTER_DRIVEN){
+				adjacentNodes = network.calculateAdjacentNodesClusterDriven(config.getEdgesCount());
 			} else {
-				adjacentNodes = network.calculateAdjacentNodesClusterDriven(edgesCount);
+				System.err.println("Method driven '" + config.getMethodDriven() + "' is not valid");
+				return null;
 			}
 			network.addNode(i);
 			for (int j = 0; j < adjacentNodes.length; j++) {

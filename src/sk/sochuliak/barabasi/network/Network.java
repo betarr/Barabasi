@@ -103,4 +103,16 @@ public interface Network {
 	 * Returns number of edges in network.
 	 */
 	public int getNumberOfEdges();
+	
+	/**
+	 * Returns average node degree value.
+	 * @return
+	 */
+	public double getAverageNodeDegree();
+	
+	/**
+	 * Returns average cluster coefficient value.
+	 * @return
+	 */
+	public double getAverageClusterCoefficient();
 }

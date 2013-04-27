@@ -43,10 +43,14 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	 * @param methodDriven Method of preferential selection of nodes to connect
 	 * @return Network
 	 */
-	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven) {
-		Network network = new ArrayNetwork();
-		network = NetworkBase.buildNetwork(network, nodesCount, edgesCount, methodDriven);
-		return network;
+	public static Network buildNetwork(int nodesCount, int edgesCount, int methodDriven, boolean useBuildingStatistics) {
+		NetworkBuildConfiguration config = NetworkBuildConfiguration.getInstance()
+			.setNetwork(new ArrayNetwork())
+			.setNodesCount(nodesCount)
+			.setEdgesCount(edgesCount)
+			.setMethodDriven(methodDriven)
+			.setUseBuildingStatistics(useBuildingStatistics);
+		return NetworkBase.buildNetwork(config);
 	}
 	
 	@Override
@@ -100,9 +104,9 @@ public class ArrayNetwork extends NetworkBase implements Network {
 		int[] indexesOfNodesIds = this.getIndexesOfNodes(nodesIds);
 		
 		int numberOfEdges = 0;
-		for (int indexOfNode : indexesOfNodesIds) {
-			for (int i = 0; i < this.numberOfNodes; i++) {
-				if (this.incidenceMatrix[indexOfNode][i] == 1) {
+		for (int indexOfNode1 : indexesOfNodesIds) {
+			for (int indexOfNode2 : indexesOfNodesIds) {
+				if (this.incidenceMatrix[indexOfNode1][indexOfNode2] == 1) {
 					numberOfEdges++;
 				}
 			}
@@ -193,6 +197,16 @@ public class ArrayNetwork extends NetworkBase implements Network {
 			}
 		}
 		return result / 2;
+	}
+	
+	@Override
+	public double getAverageNodeDegree() {
+		return NetworkUtils.calculateAverageNodeDegree(this);
+	}
+
+	@Override
+	public double getAverageClusterCoefficient() {
+		return NetworkUtils.calculateAverageClusteRatios(this);
 	}
 	
 	/**
