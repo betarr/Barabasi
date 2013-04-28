@@ -114,5 +114,19 @@ public interface Network {
 	 * Returns average cluster coefficient value.
 	 * @return
 	 */
-	public double getAverageClusterCoefficient();
+	public double getAverageClusterRatio();
+
+	/**
+	 * Setter for build statistics.
+	 * 
+	 * @param networkBuildStatistics buildStatistics
+	 */
+	public void setNetworkBuildStatistics(NetworkBuildStatistics networkBuildStatistics);
+	
+	/**
+	 * Getter for build statistics.
+	 * 
+	 * @return Build statistics
+	 */
+	public NetworkBuildStatistics getNetworkBuildStatistics();
 }

@@ -16,29 +16,29 @@ import sk.sochuliak.barabasi.network.NetworkBuildConfiguration;
 
 public class BarabasiClusterDriven {
 	
-	private static final int NODES = 500;
+	private static final int NODES = 1000;
 	private static final int EDGES = 2;
 	
 	private static final boolean useBuildStatistics = true;
 	
-	Map<Integer, Double> clusterDistribution;
-	Map<Integer, Double> averageCluster;
-
+	private Network network;
+	
 	public BarabasiClusterDriven(int nodesCount, int edgesCount) {
-		Network network = MapNetwork.buildNetwork(nodesCount, edgesCount, NetworkBuildConfiguration.CLUSTER_DRIVEN, BarabasiClusterDriven.useBuildStatistics);
-//		System.out.println("Network builded by " + network.getClass().getName() + " in " + time + " ms.");
-		this.clusterDistribution = NetworkAnalyse.getClusterDistribution(network);
+		this.network = MapNetwork.buildNetwork(nodesCount, edgesCount,
+				NetworkBuildConfiguration.CLUSTER_DRIVEN,
+				BarabasiClusterDriven.useBuildStatistics);
 	}
 	
 	private void showClusterDistributionGraph() {
-		Set<Integer> degrees = this.clusterDistribution.keySet();
+		Map<Integer, Double> clusterDistribution = NetworkAnalyse.getClusterDistribution(this.network);
+		Set<Integer> degrees = clusterDistribution.keySet();
 		List<Integer> degreesList = new ArrayList<Integer>(degrees);
 		Collections.sort(degreesList);
 		
 		List<double[]> points = new ArrayList<double[]>();
 		for (int i = 0; i < degreesList.size(); i++) {
 			double x = (double) degreesList.get(i);
-			double y = this.clusterDistribution.get(degreesList.get(i));
+			double y = clusterDistribution.get(degreesList.get(i));
 			double logx = (x == 0) ? 0 : Math.log(x);
 			double logy = (y == 0) ? 0 : Math.log(y);
 			points.add(new double[]{logx, logy});
@@ -55,8 +55,33 @@ public class BarabasiClusterDriven {
 		Graph.showGraph(config);
 	}
 	
+	private void showBuildStatisticsInfo() {
+		System.out.println("Network builded by " + this.network.getClass().getName() + " in " + this.network.getNetworkBuildStatistics().getBuildTotalTime() + " ms.");
+		Map<Integer, Double> averageClusterRatio = this.network.getNetworkBuildStatistics().getAverageClusterRatio();
+		
+		List<double[]> points = new ArrayList<double[]>();
+		for (int nodesCount : averageClusterRatio.keySet()) {
+			points.add(new double[]{
+					(double) nodesCount,
+					averageClusterRatio.get(nodesCount)});
+		}
+		
+		Map<String, List<double[]>> data = new HashMap<String, List<double[]>>();
+		data.put("Priemerny klasterizacny koeficient", points);
+		
+		GraphConfiguration config = GraphConfiguration.createConfiguration()
+				.setTitle("Zmena priemerneho klasterizacneho koeficientu pocas rastu siete")
+				.setxAxisLabel("Pocet uzlov")
+				.setyAxisLabel("Priemerny klasterizacny koeficient")
+				.setData(data);
+		Graph.showGraph(config);
+	}
+	
 	public static void main(String[] args) {
 		BarabasiClusterDriven barabasi = new BarabasiClusterDriven(BarabasiClusterDriven.NODES, BarabasiClusterDriven.EDGES);
 		barabasi.showClusterDistributionGraph();
+		if (BarabasiClusterDriven.useBuildStatistics) {
+			barabasi.showBuildStatisticsInfo();
+		}
 	}
 }

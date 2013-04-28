@@ -1,13 +1,22 @@
 package sk.sochuliak.barabasi.network;
 
 import java.util.Arrays;
+import java.util.Date;
 
 import sk.sochuliak.barabasi.util.CommonUtils;
 
 public abstract class NetworkBase {
 	
+	protected NetworkBuildStatistics buildStatistics;
+	
 	public static Network buildNetwork(NetworkBuildConfiguration config) {
 		Network network = config.getNetwork();
+		
+		if (config.isUseBuildingStatistics()) {
+			network.setNetworkBuildStatistics(new NetworkBuildStatistics());
+			network.getNetworkBuildStatistics().setBuildStartTime(new Date().getTime());
+		}
+		
 		for (int i = 0; i < config.getNodesCount(); i++) {
 			int[] adjacentNodes;
 			if (config.getMethodDriven() == NetworkBuildConfiguration.DEGREE_DRIVEN) {
@@ -22,6 +31,17 @@ public abstract class NetworkBase {
 			for (int j = 0; j < adjacentNodes.length; j++) {
 				network.addEdge(i, adjacentNodes[j]);
 			}
+			if (config.isUseBuildingStatistics()) {
+				if (config.getMethodDriven() == NetworkBuildConfiguration.DEGREE_DRIVEN) {
+					network.getNetworkBuildStatistics().addAverageNodeDegreeValue(i, network.getAverageNodeDegree());
+				} else if (config.getMethodDriven() == NetworkBuildConfiguration.CLUSTER_DRIVEN) {
+					network.getNetworkBuildStatistics().addAverageClusterRatioValue(i, network.getAverageClusterRatio());
+				}
+			}
+		}
+		
+		if (config.isUseBuildingStatistics()) {
+			network.getNetworkBuildStatistics().setBuildEndTime(new Date().getTime());
 		}
 		return network;
 	}
@@ -108,5 +128,13 @@ public abstract class NetworkBase {
 			}
 		}
 		return result;
+	}
+
+	protected NetworkBuildStatistics getBuildStatistics() {
+		return buildStatistics;
+	}
+
+	protected void setBuildStatistics(NetworkBuildStatistics buildStatistics) {
+		this.buildStatistics = buildStatistics;
 	}
 }

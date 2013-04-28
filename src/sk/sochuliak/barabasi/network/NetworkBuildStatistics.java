@@ -29,7 +29,7 @@ public class NetworkBuildStatistics {
 		return this;
 	}
 	
-	public NetworkBuildStatistics addAverageClusterCoefficientValue(int numberOfNodes, double averageClusterCoefficient) {
+	public NetworkBuildStatistics addAverageClusterRatioValue(int numberOfNodes, double averageClusterCoefficient) {
 		this.averageClusterCoefficient.put(numberOfNodes, averageClusterCoefficient);
 		return this;
 	}
@@ -38,7 +38,7 @@ public class NetworkBuildStatistics {
 		return averageNodeDegree;
 	}
 	
-	public Map<Integer, Double> getAverageClusterCoefficient() {
+	public Map<Integer, Double> getAverageClusterRatio() {
 		return averageClusterCoefficient;
 	}
 
@@ -58,6 +58,10 @@ public class NetworkBuildStatistics {
 	public NetworkBuildStatistics setBuildEndTime(long buildEndTime) {
 		this.buildEndTime = buildEndTime;
 		return this;
+	}
+	
+	public long getBuildTotalTime() {
+		return this.buildEndTime - this.buildStartTime;
 	}
 	
 	

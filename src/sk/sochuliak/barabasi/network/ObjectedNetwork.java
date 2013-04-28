@@ -152,8 +152,19 @@ public class ObjectedNetwork extends NetworkBase implements Network {
 	}
 
 	@Override
-	public double getAverageClusterCoefficient() {
+	public double getAverageClusterRatio() {
 		return NetworkUtils.calculateAverageClusteRatios(this);
+	}
+	
+	@Override
+	public void setNetworkBuildStatistics(
+			NetworkBuildStatistics networkBuildStatistics) {
+		this.setBuildStatistics(networkBuildStatistics);
+	}
+
+	@Override
+	public NetworkBuildStatistics getNetworkBuildStatistics() {
+		return this.getBuildStatistics();
 	}
 	
 	/**

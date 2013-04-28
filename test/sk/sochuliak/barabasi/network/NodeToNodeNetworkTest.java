@@ -188,7 +188,7 @@ public class NodeToNodeNetworkTest {
 		this.network.addEdge(0, 4);
 		
 		Double expectedAverageClusterCoefficient = 7d/15d;
-		Double actualAverageClusterCoefficient = this.network.getAverageClusterCoefficient();
+		Double actualAverageClusterCoefficient = this.network.getAverageClusterRatio();
 		assertEquals(expectedAverageClusterCoefficient, actualAverageClusterCoefficient);
 	}
 	

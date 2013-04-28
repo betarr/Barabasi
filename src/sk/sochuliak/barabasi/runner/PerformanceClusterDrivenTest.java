@@ -5,7 +5,6 @@ import java.util.Date;
 import sk.sochuliak.barabasi.network.ArrayNetwork;
 import sk.sochuliak.barabasi.network.MapNetwork;
 import sk.sochuliak.barabasi.network.Network;
-import sk.sochuliak.barabasi.network.NetworkBase;
 import sk.sochuliak.barabasi.network.NetworkBuildConfiguration;
 import sk.sochuliak.barabasi.network.NodeToNodeNetwork;
 import sk.sochuliak.barabasi.network.ObjectedNetwork;
