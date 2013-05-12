@@ -6,7 +6,7 @@ import java.util.Date;
 import sk.sochuliak.barabasi.util.CommonUtils;
 
 public abstract class NetworkBase {
-	
+
 	protected NetworkBuildStatistics buildStatistics;
 	
 	public static Network buildNetwork(NetworkBuildConfiguration config) {
@@ -31,7 +31,7 @@ public abstract class NetworkBase {
 			for (int j = 0; j < adjacentNodes.length; j++) {
 				network.addEdge(i, adjacentNodes[j]);
 			}
-			if (config.isUseBuildingStatistics()) {
+			if (config.isUseBuildingStatistics() && i % NetworkBuildStatistics.BUILD_STATISTICS_ITERATION == 0) {
 				if (config.getMethodDriven() == NetworkBuildConfiguration.DEGREE_DRIVEN) {
 					network.getNetworkBuildStatistics().addAverageNodeDegreeValue(i, network.getAverageNodeDegree());
 				} else if (config.getMethodDriven() == NetworkBuildConfiguration.CLUSTER_DRIVEN) {

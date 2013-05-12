@@ -4,6 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NetworkBuildStatistics {
+	
+	/**
+	 * Build statistics will be computed after adding this number of nodes.
+	 */
+	public static final int BUILD_STATISTICS_ITERATION = 100;
 
 	/**
 	 * Map of average node degree where key is number of nodes.

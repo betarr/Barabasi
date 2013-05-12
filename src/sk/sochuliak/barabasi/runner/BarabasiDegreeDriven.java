@@ -16,10 +16,10 @@ import sk.sochuliak.barabasi.network.NetworkBuildConfiguration;
 
 public class BarabasiDegreeDriven {
 	
-	private static final int NODES = 5000;
+	private static final int NODES = 1000;
 	private static final int EDGES = 2;
 	
-	private static final boolean useBuildStatistics = false;
+	private static final boolean useBuildStatistics = true;
 	
 	private Network network;
 	
