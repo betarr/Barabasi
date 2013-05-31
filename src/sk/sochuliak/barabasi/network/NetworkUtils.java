@@ -1,11 +1,14 @@
 package sk.sochuliak.barabasi.network;
 
+import java.util.Date;
+
 import sk.sochuliak.barabasi.util.CommonUtils;
 
 
 public class NetworkUtils {
 
 	public static double[] calculateClusterRatios(int[] nodesIds, Network network) {
+//		long start = new Date().getTime();
 		double[] result = new double[nodesIds.length];
 		for (int i = 0; i < nodesIds.length; i++) {
 			int nodeId = nodesIds[i];
@@ -18,6 +21,10 @@ public class NetworkUtils {
 			}
 			result[i] = clusterRatio;
 		}
+//		long end = new Date().getTime();
+//		if ((end-start > 0)) {
+//			System.out.println("NetworkUtils \t calculateClusterRatios \t " + (end-start));
+//		}
 		return result;
 	}
 	

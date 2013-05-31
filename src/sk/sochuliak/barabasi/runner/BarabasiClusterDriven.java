@@ -2,6 +2,7 @@ package sk.sochuliak.barabasi.runner;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,17 +17,21 @@ import sk.sochuliak.barabasi.network.NetworkBuildConfiguration;
 
 public class BarabasiClusterDriven {
 	
-	private static final int NODES = 1000;
+	private static final int NODES = 5000;
 	private static final int EDGES = 2;
 	
-	private static final boolean useBuildStatistics = true;
+	private static final boolean useBuildStatistics = false;
 	
 	private Network network;
 	
 	public BarabasiClusterDriven(int nodesCount, int edgesCount) {
+//		System.out.println("START");
+		long start = new Date().getTime();
 		this.network = MapNetwork.buildNetwork(nodesCount, edgesCount,
 				NetworkBuildConfiguration.CLUSTER_DRIVEN,
 				BarabasiClusterDriven.useBuildStatistics);
+		long end = new Date().getTime();
+		System.out.println(this.getClass().getName() + "\t BarabasiClusterDriven \t " + (end-start));
 	}
 	
 	private void showClusterDistributionGraph() {
@@ -39,8 +44,8 @@ public class BarabasiClusterDriven {
 		for (int i = 0; i < degreesList.size(); i++) {
 			double x = (double) degreesList.get(i);
 			double y = clusterDistribution.get(degreesList.get(i));
-			double logx = (x == 0) ? 0 : Math.log(x);
-			double logy = (y == 0) ? 0 : Math.log(y);
+			double logx = (x == 0) ? 0 : Math.log10(x);
+			double logy = (y == 0) ? 0 : Math.log10(y);
 			points.add(new double[]{logx, logy});
 		}
 		
