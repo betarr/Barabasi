@@ -1,7 +1,6 @@
 package sk.sochuliak.barabasi.network;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,56 +61,35 @@ public class MapNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int[] calculateAdjacentNodesDegreeDriven(int nodesCount) {
-//		long start = new Date().getTime();
 		int[] adjacentNodesDegreeDriven = this.calculateAdjacentNodesDegreeDriven(nodesCount, this);
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t calculateAdjacentNodesDegreeDriven \t " + (end-start));
-//		}
 		return adjacentNodesDegreeDriven;
 	}
 
 	@Override
 	public int[] calculateAdjacentNodesClusterDriven(int nodesCount) {
-//		long start = new Date().getTime();
 		int[] adjacentNodesClusterDriven = this.calculateAdjacentNodesClusterDriven(nodesCount, this);
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t calculateAdjacentNodesClusterDriven \t " + (end-start));
-//		}
 		return adjacentNodesClusterDriven;
 	}
 
 	@Override
 	public int getNumberOfExistingEdgesBetweenNodes(int[] nodesIds) {
-//		long start = new Date().getTime();
 		int numberOfEdges = 0;
 		for (int nodeId1 : nodesIds) {
 			for (int nodeId2 : nodesIds) {
 				numberOfEdges += this.nodes.get(nodeId1).contains(nodeId2) ? 1 : 0;
 			}
 		}
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t getNumberOfExistingEdgesBetweenNodes \t " + (end-start));
-//		}
 		return numberOfEdges / 2;
 	}
 
 	@Override
 	public int getNumberOfAllPossibleEdgesBetweenNodes(int[] nodesIds) {
-//		long start = new Date().getTime();
 		int count = this.calculateNumberOfAllPossibleEdgesBetweenNodes(nodesIds.length);
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t getNumberOfAllPossibleEdgesBetweenNodes \t " + (end-start));
-//		}
 		return count;
 	}
 
 	@Override
 	public int[] getAdjacentNodesIds(int nodeId) {
-//		long start = new Date().getTime();
 		int[] result = new int[this.getAdjacentNodesCount(nodeId)];
 		if (result.length > 0) {
 			int pointer = 0;
@@ -120,10 +98,6 @@ public class MapNetwork extends NetworkBase implements Network {
 				pointer++;
 			}
 		}
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t getAdjacentNodesIds \t " + (end-start));
-//		}
 		return result;
 	}
 
@@ -139,12 +113,7 @@ public class MapNetwork extends NetworkBase implements Network {
 
 	@Override
 	public int getNumberOfNodes() {
-//		long start = new Date().getTime();
 		int numberOfNodes = this.nodes.size();
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t getNumberOfNodes \t " + (end-start));
-//		}
 		return numberOfNodes;
 	}
 
@@ -155,17 +124,12 @@ public class MapNetwork extends NetworkBase implements Network {
 	
 	@Override
 	public int[] getNodesIds() {
-//		long start = new Date().getTime();
 		int[] result = new int[this.getNumberOfNodes()];
 		int pointer = 0;
 		for (Integer nodeId : this.nodes.keySet()) {
 			result[pointer] = nodeId;
 			pointer++;
 		}
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println(this.getClass().getName() + "\t getNodesIds \t " + (end-start));
-//		}
 		return result;
 	}
 	
@@ -176,6 +140,17 @@ public class MapNetwork extends NetworkBase implements Network {
 			result += this.nodes.get(nodeId).size();
 		}
 		return result / 2;
+	}
+	
+	@Override
+	public double getClusterRatio(int nodeId) {
+		int[] adjacentNodesIds = this.getAdjacentNodesIds(nodeId);
+		int existingEdges = this.getNumberOfExistingEdgesBetweenNodes(adjacentNodesIds);
+		int allPossibleEdges = this.getNumberOfAllPossibleEdgesBetweenNodes(adjacentNodesIds);
+		if (allPossibleEdges == 0) {
+			return 0;
+		}
+		return (double)existingEdges / (double)allPossibleEdges;
 	}
 
 	@Override
@@ -197,5 +172,18 @@ public class MapNetwork extends NetworkBase implements Network {
 	@Override
 	public NetworkBuildStatistics getNetworkBuildStatistics() {
 		return this.getBuildStatistics();
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Integer node : this.nodes.keySet()) {
+			sb.append(node).append(":");
+			for (Integer neighbour : this.nodes.get(node)) {
+				sb.append(" ").append(neighbour).append(",");
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
 	}
 }

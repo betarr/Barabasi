@@ -200,6 +200,17 @@ public class ArrayNetwork extends NetworkBase implements Network {
 	}
 	
 	@Override
+	public double getClusterRatio(int nodeId) {
+		int[] adjacentNodesIds = this.getAdjacentNodesIds(nodeId);
+		int existingEdges = this.getNumberOfExistingEdgesBetweenNodes(adjacentNodesIds);
+		int allPossibleEdges = this.getNumberOfAllPossibleEdgesBetweenNodes(adjacentNodesIds);
+		if (allPossibleEdges == 0) {
+			return 0;
+		}
+		return (double)existingEdges / (double)allPossibleEdges;
+	}
+	
+	@Override
 	public double getAverageNodeDegree() {
 		return NetworkUtils.calculateAverageNodeDegree(this);
 	}

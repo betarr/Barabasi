@@ -10,7 +10,6 @@ public abstract class NetworkBase {
 	protected NetworkBuildStatistics buildStatistics;
 	
 	public static Network buildNetwork(NetworkBuildConfiguration config) {
-//		long start = new Date().getTime();
 		Network network = config.getNetwork();
 		
 		if (config.isUseBuildingStatistics()) {
@@ -19,7 +18,6 @@ public abstract class NetworkBase {
 		}
 		
 		for (int i = 0; i < config.getNodesCount(); i++) {
-			long iterationStart = new Date().getTime();
 			int[] adjacentNodes;
 			if (config.getMethodDriven() == NetworkBuildConfiguration.DEGREE_DRIVEN) {
 				adjacentNodes = network.calculateAdjacentNodesDegreeDriven(config.getEdgesCount());
@@ -40,27 +38,16 @@ public abstract class NetworkBase {
 					network.getNetworkBuildStatistics().addAverageClusterRatioValue(i, network.getAverageClusterRatio());
 				}
 			}
-			long iterationEnd = new Date().getTime();
-			System.out.println("Adding node " + i + " takes " + (iterationEnd-iterationStart) + " ms.");
 		}
 		
 		if (config.isUseBuildingStatistics()) {
 			network.getNetworkBuildStatistics().setBuildEndTime(new Date().getTime());
 		}
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println("NetworkBase \t buildNetwork \t " + (end-start));
-//		}
 		return network;
 	}
 	
 	protected int calculateNumberOfAllPossibleEdgesBetweenNodes(int numberOfNodes) {
-//		long start = new Date().getTime();
 		int count = ((numberOfNodes-1)*numberOfNodes) / 2;
-//		long end = new Date().getTime();
-//		if ((end-start > 0)) {
-//			System.out.println("NetworkBase \t calculateNumberOfAllPossibleEdgesBetweenNodes \t " + (end-start));
-//		}
 		return count;
 	}
 	

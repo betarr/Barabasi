@@ -104,6 +104,15 @@ public interface Network {
 	 */
 	public int getNumberOfEdges();
 	
+	
+	/**
+	 * Returns cluster ratio of given node identified by its id.
+	 * 
+	 * @param nodeId nodeId Id of node
+	 * @return Cluster ratio of node
+	 */
+	public double getClusterRatio(int nodeId);
+	
 	/**
 	 * Returns average node degree value.
 	 * @return
