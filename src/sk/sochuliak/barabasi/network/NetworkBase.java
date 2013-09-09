@@ -108,23 +108,56 @@ public abstract class NetworkBase {
 		double[] clusterRatios = NetworkUtils.calculateClusterRatios(allNodesIds, network);
 		double sumOfClusterRatios = CommonUtils.sumOfDoubleArray(clusterRatios);
 		
-		int numberOfCalculatedNodes = 0;
-		while (numberOfCalculatedNodes != nodesCountToCalculate) {
-			double randomValue = Math.random() * sumOfClusterRatios;
-			double areaCounter = 0d;
-			for (int i = 0; i < allNodesIds.length; i++) {
-				int candidateNodeId = allNodesIds[i];
-				double candidatesClusterRatio = clusterRatios[i];
-				double rangeFrom = areaCounter;
-				double rangeTo = areaCounter + candidatesClusterRatio;
-				if (randomValue >= rangeFrom && randomValue < rangeTo) {
-					if (!CommonUtils.isNodeIdInNodesIdsArray(candidateNodeId, result)) {
-						result[numberOfCalculatedNodes] = candidateNodeId;
-						numberOfCalculatedNodes++;
+		// calculating 1st adjacent node
+		double randomValue = Math.random() * sumOfClusterRatios;
+		double areaCounter = 0d;
+		for (int i = 0; i < allNodesIds.length; i++) {
+			int candidateNodeId = allNodesIds[i];
+			double candidatesClusterRatio = clusterRatios[i];
+			double rangeFrom = areaCounter;
+			double rangeTo = areaCounter + candidatesClusterRatio;
+			if (randomValue >= rangeFrom && randomValue < rangeTo) {
+				result[0] = candidateNodeId;
+				break;
+			}
+			areaCounter = rangeTo;
+		}
+		
+		// calculating others adjacent nodes
+		
+		int[] adjacentNodes = network.getAdjacentNodesIds(result[0]);
+		if (adjacentNodes.length <= nodesCountToCalculate-1) {
+			for (int i = 0; i < adjacentNodes.length; i++) {
+				result[i+1] = adjacentNodes[i];
+			}
+		} else {
+			
+			double[] adjacentNodesClusterRatios = NetworkUtils.calculateClusterRatios(adjacentNodes, network);
+			double[] adjacentNodesPreferentialValues = new double[adjacentNodes.length];
+			double sumOfAdjacentNodesClusterRatios = CommonUtils.sumOfDoubleArray(adjacentNodesClusterRatios);
+			
+			for (int i = 0; i < adjacentNodes.length; i++) {
+				adjacentNodesPreferentialValues[i] = (1d + adjacentNodesClusterRatios[i]) / ((double)(network.getNumberOfNodes()+1)+sumOfAdjacentNodesClusterRatios);
+			}
+			
+			int numberOfCalculatedNodes = 1;
+			while (numberOfCalculatedNodes != nodesCountToCalculate) {
+				double randomValue2 = Math.random() * sumOfAdjacentNodesClusterRatios;
+				double areaCounter2 = 0d;
+				for (int i = 0; i < adjacentNodes.length; i++) {
+					int candidateNodeId2 = adjacentNodes[i];
+					double candidatesPreferentialValue = adjacentNodesPreferentialValues[i];
+					double rangeFrom2 = areaCounter2;
+					double rangeTo2 = areaCounter2 + candidatesPreferentialValue;
+					if (randomValue2 >= rangeFrom2 && randomValue2 < rangeTo2) {
+						if (!CommonUtils.isNodeIdInNodesIdsArray(candidateNodeId2, result)) {
+							result[numberOfCalculatedNodes] = candidateNodeId2;
+							numberOfCalculatedNodes++;
+						}
+						break;
 					}
-					break;
+					areaCounter2 = rangeTo2;
 				}
-				areaCounter = rangeTo;
 			}
 		}
 		return result;
